@@ -1,0 +1,24 @@
+{
+  "parserOptions": {
+    "ecmaVersion": 2021,
+    "sourceType": "module"
+  },
+  "ignorePatterns": ["/node_modules/**/*", "/^.*/"],
+  "env": {
+    "node": true,
+    "es6": true,
+    "jest/globals": true
+  },
+  "plugins": ["jest"],
+  "extends": ["eslint:recommended", "eslint-config-prettier"],
+  "rules": {
+    "no-console": "off",
+    "no-unused-vars": "error",
+    "strict": ["error", "never"],
+    "jest/valid-expect": "error",
+    "jest/no-focused-tests": "error",
+    "jest/no-disabled-tests": "warn",
+    "jest/no-identical-title": "error",
+    "jest/prefer-to-have-length": "warn"
+  }
+}

@@ -1,0 +1,87 @@
+name: Build
+
+on:
+  pull_request:
+    branches: [develop, main]
+  push:
+    branches: [develop, main]
+
+jobs:
+  main:
+    env:
+      CI: true
+    strategy:
+      matrix:
+        node: [10, 15]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🛑 Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.6.0
+        with:
+          access_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v2
+
+      - name: ⚙️  Setup node ${{ matrix.node }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: 🔃 Cache or restore deps
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules-
+
+      - name: 📥 Download deps
+        run: npm install
+
+      - name: ⚙ Run validate script
+        run: npm run validate
+
+      - name: 📤 Upload code coverage to artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          name: test-coverage-report
+          path: coverage
+
+      - name: 📤 Upload code coverage to Codecov
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        run: npx codecov
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+  release:
+    needs: main
+    env:
+      CI: true
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    steps:
+      - name: 🛑 Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.6.0
+        with:
+          access_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v2
+
+      - name: ⚙️  Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+
+      - name: 📥 Download deps
+        run: npm install
+
+      - name: 🚀 Release
+        uses: cycjimmy/semantic-release-action@v2
+        with:
+          branch: main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
