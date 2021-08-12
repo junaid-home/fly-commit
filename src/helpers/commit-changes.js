@@ -23,13 +23,13 @@ const commitChanges = async details => {
     process.exit(1)
   }
 
-  const status = await git.commitChanges(message)
-  if (!status) {
-    console.log(
-      chalk.red(
-        `\n${symbols.error} failed to commit changes, nothing has been changed since the last commit\n`
-      )
-    )
+  const error = await git.commitChanges(message)
+  if (error.stdout) {
+    console.log(chalk.red(`\n${symbols.error} Error: \n\n ${error.stdout}\n`))
+    process.exit(1)
+  }
+  if (error.stderr) {
+    console.log(chalk.red(`\n${symbols.error} Error: \n\n ${error.stderr}\n`))
     process.exit(1)
   }
 

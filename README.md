@@ -6,7 +6,7 @@
 ![Build](https://github.com/junaid-home/fly-commit/workflows/Build/badge.svg?branch=main&event=push)
 [![codecov](https://codecov.io/gh/junaid-home/fly-commit/branch/main/graph/badge.svg?token=ZAS5ZQTIVF)](https://codecov.io/gh/junaid-home/fly-commit)
 [![](https://img.shields.io/badge/npm-v6+-0892d0?style=flat&logo=npm)](http://npmjs.com/package/fly-commit)
-[![](https://img.shields.io/badge/Version-1.2.0-0892d0?style=flat&logo=node.js)](http://npmjs.com/package/fly-commit)
+[![](https://img.shields.io/badge/Version-1.2.1-0892d0?style=flat&logo=node.js)](http://npmjs.com/package/fly-commit)
 
 </div>
 <p align="center">
