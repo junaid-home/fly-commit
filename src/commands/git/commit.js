@@ -15,9 +15,9 @@ const commitChanges = async message => {
   const [error] = await watch(exec, 'git', ['commit', ...title, ...description])
   loading.stop()
 
-  if (error) return false
+  if (error) return error
 
-  return true
+  return false
 }
 
 module.exports = {
