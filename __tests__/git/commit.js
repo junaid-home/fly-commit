@@ -20,11 +20,11 @@ test('returns true if changes are successfully commited', async () => {
     '-m',
     message.desc
   ])
-  expect(result).toBe(true)
+  expect(result).toBe(false)
 })
 
 test('returns false if changes are not successfully commited', async () => {
-  exec.mockRejectedValueOnce([true, null])
+  exec.mockRejectedValueOnce('Failed To Commit')
   const message = { title: 'FAKE_TITLE', desc: 'FAKE_DESCRIPTION' }
 
   const result = await git.commitChanges(message)
@@ -37,7 +37,7 @@ test('returns false if changes are not successfully commited', async () => {
     '-m',
     message.desc
   ])
-  expect(result).toBe(false)
+  expect(result).toBe('Failed To Commit')
 })
 
 test('throws an exception is the argument is not an object', async () => {
